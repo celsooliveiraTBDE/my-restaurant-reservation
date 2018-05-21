@@ -1,0 +1,105 @@
+<!-- 
+    // =============================================================
+// ADD RESERVATION
+// create variables capturing fields (jQuery)
+// on. click button function ->submit 
+//conditional statement -> tables or waitlist? 
+// tables [5]
+// if the tables array is full, then push the new reservation to the waitlist array
+//waitlist [99]
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hot Restaurant - Express</title>
+  <!-- Latest compiled and minified CSS & JS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./style.css">
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="jumbotron">
+      <h1>The Restaurant</h1>
+      <h3>We only have 5 tables! Book your seat before they all are gone!!</h3>
+      <hr>
+      <a href="/"><button type="button" class="btn btn-danger btn-lg"><span class="glyphicon glyphicon-eye-open"></span> View reservations</button></a>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><strong>Add reservation</strong></h3>
+          </div>
+          <div class="panel-body">
+            <form method="POST" role="form">
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name">
+              </div>
+              <div class="form-group">
+                <label for="role">Phone Number</label>
+                <input type="tel" pattern="^\d{4}-\d{3}-\d{4}$" class="form-control" id="tel">
+              </div>
+              <div class="form-group">
+                <label for="age">email</label>
+                <input type="email" class="form-control" id="email">
+              </div>
+              <div class="form-group">
+                <label for="force-points">Unique ID</label>
+                <input type="text" class="form-control" id="Unique-ID">
+              </div>
+            </form>
+            <br>
+            <div class="text-right">
+              <button type="submit" class="btn btn-primary btn-md" id="add-btn"><span class="glyphicon glyphicon-fire"></span> Add the reservation</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    
+        // creating new-WaitList
+    $("#add-btn").on("click", function(event) {
+        if (reservation.length < 6) {
+            // creating new-reservation
+            event.preventDefault();
+            var newReservation = {
+                name: $("#name").val().trim(),
+                tel: $("#tel").val().trim(),
+                email: $("#email").val().trim(),
+                uniqueID: $("#Unique-ID").val().trim()
+            };
+            // Question: What does this code do??
+            $.post("/api/new", newReservation)
+            .then(function(data) {
+                console.log(data);
+                alert("Adding reservation...");
+            });
+            } else {
+                event.preventDefault();
+                 var newwaitList = {
+                name: $("#name").val().trim(),
+                tel: $("#tel").val().trim(),
+                email: $("#email").val().trim(),
+                uniqueID: $("#Unique-ID").val().trim()
+            };
+            // Question: What does this code do??
+            $.post("/api/new", newwaitList)
+            .then(function(data) {
+                console.log(data);
+                alert("Adding wait List...");
+            });
+            
+            } 
+    });
+  </script>
+</body>
+</html>
+
+
+Add CommentCollapse 
