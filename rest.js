@@ -1,40 +1,3 @@
-// Front end 
-//1. Update Jumbtrom HTML
-//1a. View Buttom, Make Res Button 
-//table link or waitlist 
-
-
-// link to go bacl to Make Res., Home
-//Make Res
-// BUTTONS: link to go back to View Tables, Home
-// FORM: [name, phone, email, UID] SUBMIT BUTTON
-
-
-
-// Click View Tables 
- //each record will display current number (table) and name (5)
- //1.
- //...
-//5. 
-
-//Waiting List (no limit?)
- //1.
- //...
-//5. 
-//
-
-//PERSISTENT FOOTER from heroku
-// Control Panel
-// -- API Table Link--> JSON object representation (array1)
-
-// -- API Wait List --> JSON object for tables (array2)| GitHub Repo -- 
-// -- GitHub Repo --> link to GitHub
-
-
-// back end
-
-// GitHub repo, zencode, issues, yadda yadda
-
 //  BACK END
 
 //  VIEW TABLES BUTTON
@@ -72,70 +35,99 @@ var port = process.env.PORT || 3000;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// Star Wars reservation (DATA)
+// Sreservations (DATA)
 // =============================================================
-var reservation = [
-    {
-        name: "Test",
-        tel: "11111",
-        email: "1@1.com",
-        uniqueID: "99999"
-        }
-  
+var reservations = [
+  {
+    name: "Test",
+    tel: "11111",
+    email: "1@1.com",
+    uniqueID: "99999"
+  }
+
+];
+var waitlists = [
+  {
+    name: "Test2",
+    tel: "11111",
+    email: "1@1.com",
+    uniqueID: "99999"
+  }
+
 ];
 
 // Routes
 // =============================================================
 
 // Basic route that sends the user first to the AJAX Page
-app.get("/", function(req, res) {
+app.get("/", function (req, res) {
   res.sendFile(path.join(__dirname, "view.html"));
 });
 
-app.get("/add", function(req, res) {
-  res.sendFile(path.join(__dirname, "Reservation.html"));
+app.get("/reservation", function (req, res) {
+  res.sendFile(path.join(__dirname, "reservation.html"));
 });
 
 // Get all reservations
-app.get("/all", function(req, res) {
-  res.json(reservation);
+app.get("/all", function (req, res) {
+  res.json(reservations);
 });
-
+// Get all reservations
+app.get("/waitlist", function (req, res) {
+  res.json(waitlists);
+});
 // Search for Specific Character (or all reservation) - provides JSON
-app.get("/api/:reservation?", function(req, res) {
-  var chosen = req.params.reservation;
+app.get("/api/:reservations?", function (req, res) {
+  var chosen = req.params.reservations;
 
   if (chosen) {
     console.log(chosen);
 
-    for (var i = 0; i < reservation.length; i++) {
-      if (chosen === reservation[i].routeName) {
-        return res.json(reservation[i]);
+    for (var i = 0; i < reservations.length; i++) {
+      if (chosen === reservations[i].routeName) {
+        return res.json(reservations[i]);
       }
     }
     return res.json(false);
   }
-  return res.json(reservation);
+  return res.json(reservations);
 });
 
 // Create New Reservation - takes in JSON input
-app.post("/api/new", function(req, res) {
-  // req.body hosts is equal to the JSON post sent from the user
-  // This works because of our body-parser middleware
-  var newRezzy = req.body;
-  // Using a RegEx Pattern to remove spaces from newRezzy
-  // You can read more about RegEx Patterns later https://www.regexbuddy.com/regex.html
-  newRezzy.routeName = newRezzy.name.replace(/\s+/g, "").toLowerCase();
+app.post("/api/new", function (req, res) {
+  if (reservations.length < 5) {
 
-  console.log(newRezzy);
 
-  reservation.push(newRezzy);
+    // req.body hosts is equal to the JSON post sent from the user
+    // This works because of our body-parser middleware
+    var newRezzy = req.body;
+    // Using a RegEx Pattern to remove spaces from newRezzy
+    // You can read more about RegEx Patterns later https://www.regexbuddy.com/regex.html
+    newRezzy.routeName = newRezzy.name.replace(/\s+/g, "").toLowerCase();
 
-  res.json(newRezzy);
+    console.log(newRezzy);
+
+    reservations.push(newRezzy);
+
+    res.json(newRezzy);
+  }
+  else {
+    // This works because of our body-parser middleware
+    var newWaitlist = req.body;
+    // Using a RegEx Pattern to remove spaces from newRezzy
+    // You can read more about RegEx Patterns later https://www.regexbuddy.com/regex.html
+    newWaitlist.routeName = newWaitlist.name.replace(/\s+/g, "").toLowerCase();
+
+    console.log(newWaitlist);
+
+    waitlists.push(newWaitlist);
+
+    res.json(newWaitlist);
+  }
 });
 
 // Starts the server to begin listening
 // =============================================================
-app.listen(port, function() {
+app.listen(port, function () {
   console.log("App listening on PORT " + port);
 });

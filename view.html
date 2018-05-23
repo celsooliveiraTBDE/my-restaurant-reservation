@@ -16,14 +16,14 @@
     <div class="container">
         <div class="jumbotron">
             <h1>The Restaurant</h1>
-            <h3>Current Resrvations and Waiting List</h3>
+            <h3>Current Reservations and Waiting List</h3>
             <hr>
             <!-- <a href="/add"><button type="button" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-list-alt"></span> View Tables</button></a> -->
-            <a href="/add">
+            <a href="/reservation">
                 <button type="button" class="btn btn-danger btn-lg">
                     <span class="glyphicon glyphicon-credit-card"></span> Make Reservation</button>
             </a>
-            <a href="/add">
+            <a href="/all">
                 <button type="button" class="btn btn-default btn-lg">
                     <span class="glyphicon glyphicon-home"></span>
                 </button>
@@ -57,27 +57,42 @@
 
     <script type="text/javascript">
         $("#search-btn").on("click", function () {
-            var searchedCharacter = $("#character-search").val().trim();
+            var searchedTable = $("#table-search").val().trim();
 
             // Using a RegEx Pattern to remove spaces from searchedCharacter
             // You can read more about RegEx Patterns later https://www.regexbuddy.com/regex.html
             searchedCharacter = searchedCharacter.replace(/\s+/g, "").toLowerCase();
 
-            $.get("/api/" + searchedCharacter, function (data) {
-                console.log(data);
-                if (data) {
-                    $("#stats").show();
-                    $("#name").text(data.name);
-                    $("#role").text(data.role);
-                    $("#age").text(data.age);
-                    $("#force-points").text(data.forcePoints);
-                }
-                else {
-                    $("#name").text("The force is not strong with this one. Your character was not found.");
-                    $("#stats").hide();
-                }
-            });
+
         });
+        $.get("/all", function(data) {
+      for (var i = 0; i < data.length; i++) {
+
+        var wellSection = $("<div>");
+        wellSection.addClass("well");
+        wellSection.attr("id", "table-well-" + i);
+        $("#tableSection").append(wellSection);
+
+        $("#table-well-" + i).append("<h2>" + data[i].name + "</h2>");
+        $("#table-well-" + i).append("<h3>Tel: " + data[i].tel + "</h4>");
+        $("#table-well-" + i).append("<h3>Email: " + data[i].email + "</h4>");
+        $("#table-well-" + i).append("<h3>UID : " + data[i].uniqueID + "</h4>");
+      }
+    });
+    $.get("/waitlist", function(data) {
+      for (var i = 0; i < data.length; i++) {
+          
+        var wellSection2 = $("<div>");
+        wellSection2.addClass("well");
+        wellSection2.attr("id", "table-well2-" + i);
+        $("#waitlistSection").append(wellSection2);
+
+        $("#table-well2-" + i).append("<h2>" + data[i].name + "</h2>");
+        $("#table-well2-" + i).append("<h3>Tel: " + data[i].tel + "</h4>");
+        $("#table-well2-" + i).append("<h3>Email: " + data[i].email + "</h4>");
+        $("#table-well2-" + i).append("<h3>UID : " + data[i].uniqueID + "</h4>");
+      }
+    });
     </script>
 </body>
 

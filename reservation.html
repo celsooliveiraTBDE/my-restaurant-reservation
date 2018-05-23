@@ -65,41 +65,23 @@
     
         // creating new-WaitList
     $("#add-btn").on("click", function(event) {
-        if (reservation.length < 6) {
-            // creating new-reservation
-            event.preventDefault();
+      event.preventDefault();
             var newReservation = {
                 name: $("#name").val().trim(),
                 tel: $("#tel").val().trim(),
                 email: $("#email").val().trim(),
                 uniqueID: $("#Unique-ID").val().trim()
             };
+   
+            // creating new-reservation
+
             // Question: What does this code do??
             $.post("/api/new", newReservation)
             .then(function(data) {
                 console.log(data);
                 alert("Adding reservation...");
-            });
-            } else {
-                event.preventDefault();
-                 var newwaitList = {
-                name: $("#name").val().trim(),
-                tel: $("#tel").val().trim(),
-                email: $("#email").val().trim(),
-                uniqueID: $("#Unique-ID").val().trim()
-            };
-            // Question: What does this code do??
-            $.post("/api/new", newwaitList)
-            .then(function(data) {
-                console.log(data);
-                alert("Adding wait List...");
-            });
-            
-            } 
+            });   
     });
   </script>
 </body>
 </html>
-
-
-Add CommentCollapse 
